@@ -1,18 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
 using System.Diagnostics;
+using System.Drawing;
 using System.IO;
-using System.Security.Cryptography;
-using System.Text.RegularExpressions;
-using Microsoft.VisualBasic;
+using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Security.Cryptography;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Windows.Forms;
+using Microsoft.VisualBasic;
 
 namespace MifareOneTool
 {
@@ -163,7 +162,7 @@ namespace MifareOneTool
         void list_dev(object sender, DoWorkEventArgs e)
         {
             if (lprocess) { return; }
-            ProcessStartInfo psi = new ProcessStartInfo("nfc-bin/nfc-scan-device.exe");
+            ProcessStartInfo psi = CreateProcessStartInfo("nfc-bin/nfc-scan-device.exe");
             psi.CreateNoWindow = true;
             psi.UseShellExecute = false;
             psi.RedirectStandardOutput = true;
@@ -248,7 +247,7 @@ namespace MifareOneTool
         void list_tag(object sender, DoWorkEventArgs e)
         {
             if (lprocess) { return; }
-            ProcessStartInfo psi = new ProcessStartInfo("nfc-bin/nfc-list.exe");
+            ProcessStartInfo psi = CreateProcessStartInfo("nfc-bin/nfc-list.exe");
             psi.CreateNoWindow = true;
             psi.UseShellExecute = false;
             psi.RedirectStandardOutput = true;
@@ -272,7 +271,7 @@ namespace MifareOneTool
 
         private string GetUID()
         {
-            ProcessStartInfo psi = new ProcessStartInfo("nfc-bin/nfc-list.exe");
+            ProcessStartInfo psi = CreateProcessStartInfo("nfc-bin/nfc-list.exe");
             psi.CreateNoWindow = true;
             psi.UseShellExecute = false;
             psi.RedirectStandardOutput = true;
@@ -364,7 +363,7 @@ namespace MifareOneTool
         void mf_read(object sender, DoWorkEventArgs e)
         {
             if (lprocess) { return; }
-            ProcessStartInfo psi = new ProcessStartInfo("nfc-bin/nfc-mfclassic.exe");
+            ProcessStartInfo psi = CreateProcessStartInfo("nfc-bin/nfc-mfclassic.exe");
             string[] args = (string[])e.Argument;
             psi.Arguments = "r " + args[1] + " u \"" + args[0] + "\"";
             if (keymfd != "" && args[2] == "")
@@ -399,7 +398,7 @@ namespace MifareOneTool
 
         private void buttonCLI_Click(object sender, EventArgs e)
         {
-            ProcessStartInfo psi = new ProcessStartInfo("cmd.exe");
+            ProcessStartInfo psi = CreateProcessStartInfo("cmd.exe");
             psi.WorkingDirectory = "nfc-bin";
             Process.Start(psi);
         }
@@ -497,7 +496,7 @@ namespace MifareOneTool
         void mf_write(object sender, DoWorkEventArgs e)
         {
             if (lprocess) { return; }
-            ProcessStartInfo psi = new ProcessStartInfo("nfc-bin/nfc-mfclassic.exe");
+            ProcessStartInfo psi = CreateProcessStartInfo("nfc-bin/nfc-mfclassic.exe");
             string[] args = (string[])e.Argument;
             psi.Arguments = "w " + args[1] + " u \"" + args[0] + "\"";
             if (keymfd != "" && args[2] == "")
@@ -558,7 +557,7 @@ namespace MifareOneTool
         void mfoc(object sender, DoWorkEventArgs e)
         {
             if (lprocess) { return; }
-            ProcessStartInfo psi = new ProcessStartInfo("nfc-bin/mfoc.exe");
+            ProcessStartInfo psi = CreateProcessStartInfo("nfc-bin/mfoc.exe");
             string[] args = (string[])e.Argument;
             psi.Arguments = args[1] + " -O \"" + args[0] + "\"";
             psi.CreateNoWindow = true;
@@ -611,7 +610,7 @@ namespace MifareOneTool
         void reset_uid(object sender, DoWorkEventArgs e)
         {
             if (lprocess) { return; }
-            ProcessStartInfo psi = new ProcessStartInfo("nfc-bin/nfc-mfsetuid.exe");
+            ProcessStartInfo psi = CreateProcessStartInfo("nfc-bin/nfc-mfsetuid.exe");
             RNGCryptoServiceProvider rng = new RNGCryptoServiceProvider();
             byte[] uid = new byte[4];
             rng.GetNonZeroBytes(uid);
@@ -649,7 +648,7 @@ namespace MifareOneTool
         void format_uid(object sender, DoWorkEventArgs e)
         {
             if (lprocess) { return; }
-            ProcessStartInfo psi = new ProcessStartInfo("nfc-bin/nfc-mfsetuid.exe");
+            ProcessStartInfo psi = CreateProcessStartInfo("nfc-bin/nfc-mfsetuid.exe");
             RNGCryptoServiceProvider rng = new RNGCryptoServiceProvider();
             byte[] uid = new byte[4];
             rng.GetNonZeroBytes(uid);
@@ -691,7 +690,7 @@ namespace MifareOneTool
         void bmf_read(object sender, DoWorkEventArgs e)
         {
             if (lprocess) { return; }
-            ProcessStartInfo psi = new ProcessStartInfo("nfc-bin/nfc-mfclassic.exe");
+            ProcessStartInfo psi = CreateProcessStartInfo("nfc-bin/nfc-mfclassic.exe");
             string[] args = (string[])e.Argument;
             psi.Arguments = "R A u \"" + args[0] + "\"";
             psi.CreateNoWindow = true;
@@ -747,7 +746,7 @@ namespace MifareOneTool
         void bmf_write(object sender, DoWorkEventArgs e)
         {
             if (lprocess) { return; }
-            ProcessStartInfo psi = new ProcessStartInfo("nfc-bin/nfc-mfclassic.exe");
+            ProcessStartInfo psi = CreateProcessStartInfo("nfc-bin/nfc-mfclassic.exe");
             string[] args = (string[])e.Argument;
             psi.Arguments = "W A u \"" + args[0] + "\"";
             if (keymfd != "")
@@ -809,7 +808,7 @@ namespace MifareOneTool
         void set_uid(object sender, DoWorkEventArgs e)
         {
             if (lprocess) { return; }
-            ProcessStartInfo psi = new ProcessStartInfo("nfc-bin/nfc-mfsetuid.exe");
+            ProcessStartInfo psi = CreateProcessStartInfo("nfc-bin/nfc-mfsetuid.exe");
             psi.Arguments = "" + ((string)e.Argument).Substring(0, 8) + "2B0804006263646566676869";
             psi.CreateNoWindow = true;
             psi.UseShellExecute = false;
@@ -843,7 +842,7 @@ namespace MifareOneTool
         void Mfcuk(object sender, DoWorkEventArgs e)
         {
             if (lprocess) { MessageBox.Show("有任务运行中，不可执行。", "设备忙", MessageBoxButtons.OK, MessageBoxIcon.Warning); return; }
-            ProcessStartInfo psi = new ProcessStartInfo("cmd");
+            ProcessStartInfo psi = CreateProcessStartInfo("cmd");
             psi.Arguments = "/k mfcuk.exe -v 3 -C -R -1 -s 250 -S 250";
             psi.WorkingDirectory = "nfc-bin";
             lprocess = true;
@@ -914,7 +913,7 @@ namespace MifareOneTool
         void cmf_write(object sender, DoWorkEventArgs e)
         {
             if (lprocess) { return; }
-            ProcessStartInfo psi = new ProcessStartInfo("nfc-bin/nfc-mfclassic.exe");
+            ProcessStartInfo psi = CreateProcessStartInfo("nfc-bin/nfc-mfclassic.exe");
             string[] args = (string[])e.Argument;
             psi.Arguments = "c " + args[1] + " u \"" + args[0] + "\"";
             if (keymfd != "" && args[2] == "")
@@ -973,7 +972,7 @@ namespace MifareOneTool
         void lock_ufuid(object sender, DoWorkEventArgs e)
         {
             if (lprocess) { return; }
-            ProcessStartInfo psi = new ProcessStartInfo("nfc-bin/nfc-mfsetuid.exe");
+            ProcessStartInfo psi = CreateProcessStartInfo("nfc-bin/nfc-mfsetuid.exe");
             RNGCryptoServiceProvider rng = new RNGCryptoServiceProvider();
             byte[] uid = new byte[4];
             rng.GetNonZeroBytes(uid);
@@ -1026,7 +1025,7 @@ namespace MifareOneTool
         void mf_format(object sender, DoWorkEventArgs e)
         {
             if (lprocess) { return; }
-            ProcessStartInfo psi = new ProcessStartInfo("nfc-bin/nfc-mfclassic.exe");
+            ProcessStartInfo psi = CreateProcessStartInfo("nfc-bin/nfc-mfclassic.exe");
             string[] args = (string[])e.Argument;
             psi.Arguments = "f " + args[1] + " u \"" + args[0] + "\"";
             psi.Arguments += " \"" + keymfd + "\" f";
@@ -1190,7 +1189,7 @@ namespace MifareOneTool
         void MfDetect(object sender, DoWorkEventArgs e)
         {
             if (lprocess) { return; }
-            ProcessStartInfo psi = new ProcessStartInfo("nfc-bin/mfdetect.exe");
+            ProcessStartInfo psi = CreateProcessStartInfo("nfc-bin/mfdetect.exe");
             psi.Arguments = (string)(e.Argument) + "-O dummy.tmp";
             psi.CreateNoWindow = true;
             psi.UseShellExecute = false;
@@ -1315,7 +1314,7 @@ namespace MifareOneTool
         void mfocCMD(object sender, DoWorkEventArgs e)
         {
             if (lprocess) { return; }
-            ProcessStartInfo psi = new ProcessStartInfo("cmd.exe");
+            ProcessStartInfo psi = CreateProcessStartInfo("cmd.exe");
             string[] args = (string[])e.Argument;
             psi.WorkingDirectory = "./";
             psi.Arguments = "/T:0A " + args[2] + @" nfc-bin\mfoc.exe " + args[1] + " -O \"" + args[0] + "\"";
@@ -1385,7 +1384,7 @@ namespace MifareOneTool
         void Hardnest(object sender, DoWorkEventArgs e)
         {
             if (lprocess) { return; }
-            ProcessStartInfo psi = new ProcessStartInfo("nfc-bin/libnfc_hardnested.exe");
+            ProcessStartInfo psi = CreateProcessStartInfo("nfc-bin/libnfc_hardnested.exe");
             if (Properties.Settings.Default.HardLowCost)
             {
                 psi.FileName = "nfc-bin/libnfc_hardnestedlc.exe";
@@ -1419,7 +1418,7 @@ namespace MifareOneTool
         void CollectNonce(object sender, DoWorkEventArgs e)
         {
             if (lprocess) { return; }
-            ProcessStartInfo psi = new ProcessStartInfo("nfc-bin/collect.exe");
+            ProcessStartInfo psi = CreateProcessStartInfo("nfc-bin/collect.exe");
             psi.Arguments = (string)e.Argument;
             psi.CreateNoWindow = true;
             psi.UseShellExecute = false;
@@ -1523,6 +1522,14 @@ namespace MifareOneTool
         {
             FormMFF08 mff08 = new FormMFF08();
             mff08.ShowDialog();
+        }
+
+        private ProcessStartInfo CreateProcessStartInfo(string fileName)
+        {
+            ProcessStartInfo processStartInfo = new ProcessStartInfo(fileName);
+            processStartInfo.StandardOutputEncoding = Encoding.GetEncoding(936);
+            processStartInfo.StandardErrorEncoding = Encoding.GetEncoding(936);
+            return processStartInfo;
         }
     }
 }
