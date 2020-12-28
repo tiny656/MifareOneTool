@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
 using System.IO;
-using System.Text.RegularExpressions;
+using System.Linq;
 using System.Security.Cryptography;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Windows.Forms;
 using Microsoft.VisualBasic;
 
 namespace MifareOneTool
@@ -56,11 +55,11 @@ namespace MifareOneTool
                 return;
             }
             labelCurSec.Text = "当前选定扇区：" + sectorIndex.ToString();
-            block0Edit.Text = Form1.hex(currentS50.Sectors[sectorIndex].Block[0]);
-            block1Edit.Text = Form1.hex(currentS50.Sectors[sectorIndex].Block[1]);
-            block2Edit.Text = Form1.hex(currentS50.Sectors[sectorIndex].Block[2]);
-            keyAEdit.Text = Form1.hex(currentS50.Sectors[sectorIndex].Block[3].Skip(0).Take(6).ToArray());
-            keyBEdit.Text = Form1.hex(currentS50.Sectors[sectorIndex].Block[3].Skip(10).Take(6).ToArray());
+            block0Edit.Text = MainForm.hex(currentS50.Sectors[sectorIndex].Block[0]);
+            block1Edit.Text = MainForm.hex(currentS50.Sectors[sectorIndex].Block[1]);
+            block2Edit.Text = MainForm.hex(currentS50.Sectors[sectorIndex].Block[2]);
+            keyAEdit.Text = MainForm.hex(currentS50.Sectors[sectorIndex].Block[3].Skip(0).Take(6).ToArray());
+            keyBEdit.Text = MainForm.hex(currentS50.Sectors[sectorIndex].Block[3].Skip(10).Take(6).ToArray());
             byte[] acbits = Utils.ReadAC(currentS50.Sectors[sectorIndex].Block[3].Skip(6).Take(4).ToArray());
             comboBox1.SelectedIndex = acbits[0] & 0x07;
             comboBox2.SelectedIndex = acbits[1] & 0x07;
@@ -75,7 +74,7 @@ namespace MifareOneTool
                     ^ currentS50.Sectors[sectorIndex].Block[0][1]
                     ^ currentS50.Sectors[sectorIndex].Block[0][2]
                     ^ currentS50.Sectors[sectorIndex].Block[0][3]);
-                block0Edit.Text = Form1.hex(currentS50.Sectors[sectorIndex].Block[0]);
+                block0Edit.Text = MainForm.hex(currentS50.Sectors[sectorIndex].Block[0]);
                 msg += "该扇区UID校验值错误，已经自动为您更正。\n";
             }
             if ((res & 0x02) == 0x02)
@@ -316,7 +315,7 @@ namespace MifareOneTool
             byte[] buid = new byte[4];
             RNGCryptoServiceProvider rng = new RNGCryptoServiceProvider();
             rng.GetNonZeroBytes(buid);
-            string uid = Interaction.InputBox("请输入需要更改的UID卡号，共8位十六进制数，如E44A3BF1。", "请输入UID号", Form1.hex(buid), -1, -1).Trim();
+            string uid = Interaction.InputBox("请输入需要更改的UID卡号，共8位十六进制数，如E44A3BF1。", "请输入UID号", MainForm.hex(buid), -1, -1).Trim();
             string pat = "[0-9A-Fa-f]{8}";
             if (!Regex.IsMatch(uid, pat))
             {
@@ -330,7 +329,7 @@ namespace MifareOneTool
             currentS50.Sectors[0].Block[0][2] = buid[2];
             currentS50.Sectors[0].Block[0][3] = buid[3];
             currentS50.Sectors[0].Block[0][4] = bcc;
-            logAppend("UID已改为" + Form1.hex(buid) + "，计算得到BCC=" + Form1.hex(new byte[]{bcc}));
+            logAppend("UID已改为" + MainForm.hex(buid) + "，计算得到BCC=" + MainForm.hex(new byte[]{bcc}));
             reloadEdit(0);
         }
 
@@ -363,7 +362,7 @@ namespace MifareOneTool
                             ^ currentS50.Sectors[i].Block[0][1]
                             ^ currentS50.Sectors[i].Block[0][2]
                             ^ currentS50.Sectors[i].Block[0][3]);
-                        block0Edit.Text = Form1.hex(currentS50.Sectors[i].Block[0]);
+                        block0Edit.Text = MainForm.hex(currentS50.Sectors[i].Block[0]);
                         msg += "该扇区UID校验值错误，已自动更正。\n";
                     }
                     if ((res[i] & 0x02) == 0x02)

@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Windows.Forms;
-using System.Diagnostics;
-using System.Reflection;
 
 namespace MifareOneTool
 {
@@ -19,7 +15,7 @@ namespace MifareOneTool
             {
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
-                Application.Run(new Form1());
+                Application.Run(new MainForm());
             }
             else
             {
@@ -29,7 +25,7 @@ namespace MifareOneTool
                 {
                     Application.EnableVisualStyles();
                     Application.SetCompatibleTextRenderingDefault(false);
-                    Application.Run(new Form1());
+                    Application.Run(new MainForm());
                     mutex.ReleaseMutex();
                 }
                 else
@@ -38,7 +34,7 @@ namespace MifareOneTool
                     {
                         Application.EnableVisualStyles();
                         Application.SetCompatibleTextRenderingDefault(false);
-                        Application.Run(new Form1());
+                        Application.Run(new MainForm());
                         mutex.ReleaseMutex();
                     }
                     else

@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Security.Cryptography;
+using System.Diagnostics;
 using System.IO;
+using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using System.Text.RegularExpressions;
 
 namespace MifareOneTool
@@ -127,6 +128,14 @@ namespace MifareOneTool
         //        + ((ac[1] & 0x80) >> 5));
         //    return acbits;
         //}
+
+        public static ProcessStartInfo CreateProcessStartInfo(string fileName)
+        {
+            ProcessStartInfo processStartInfo = new ProcessStartInfo(fileName);
+            processStartInfo.StandardOutputEncoding = Encoding.GetEncoding(936);
+            processStartInfo.StandardErrorEncoding = Encoding.GetEncoding(936);
+            return processStartInfo;
+        }
     }
     enum AccessBitsT
     {

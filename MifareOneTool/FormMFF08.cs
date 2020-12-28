@@ -1,13 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
 using System.Diagnostics;
 using System.IO;
+using System.Windows.Forms;
 
 namespace MifareOneTool
 {
@@ -79,7 +74,7 @@ namespace MifareOneTool
         void cmf_write(object sender, DoWorkEventArgs e)
         {
             if (lprocess) { return; }
-            ProcessStartInfo psi = new ProcessStartInfo("nfc-bin/mff08.exe");
+            ProcessStartInfo psi = Utils.CreateProcessStartInfo("nfc-bin/mff08.exe");
             string[] args = (string[])e.Argument;
             psi.Arguments = "c " + args[1] + " u \"" + args[0] + "\"";
             if (args[3] != "" && args[2] == "")

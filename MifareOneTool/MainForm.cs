@@ -15,9 +15,9 @@ using Microsoft.VisualBasic;
 
 namespace MifareOneTool
 {
-    public partial class Form1 : Form
+    public partial class MainForm : Form
     {
-        public Form1()
+        public MainForm()
         {
             InitializeComponent();
         }
@@ -29,7 +29,7 @@ namespace MifareOneTool
         private void buttonListDev_Click(object sender, EventArgs e)
         {
             if (lprocess) { MessageBox.Show("有任务运行中，不可执行。", "设备忙", MessageBoxButtons.OK, MessageBoxIcon.Warning); return; }
-            Form1.ActiveForm.Text = "MifareOne Tool - 运行中";
+            MainForm.ActiveForm.Text = "MifareOne Tool - 运行中";
             if (Properties.Settings.Default.NewScan)
             { File.Delete("libnfc.conf"); }
             BackgroundWorker bgw = new BackgroundWorker();
@@ -162,7 +162,7 @@ namespace MifareOneTool
         void list_dev(object sender, DoWorkEventArgs e)
         {
             if (lprocess) { return; }
-            ProcessStartInfo psi = CreateProcessStartInfo("nfc-bin/nfc-scan-device.exe");
+            ProcessStartInfo psi = Utils.CreateProcessStartInfo("nfc-bin/nfc-scan-device.exe");
             psi.CreateNoWindow = true;
             psi.UseShellExecute = false;
             psi.RedirectStandardOutput = true;
@@ -236,7 +236,7 @@ namespace MifareOneTool
 
         private void buttonScanCard_Click(object sender, EventArgs e)
         {
-            if (lprocess) { MessageBox.Show("有任务运行中，不可执行。", "设备忙", MessageBoxButtons.OK, MessageBoxIcon.Warning); return; } Form1.ActiveForm.Text = "MifareOne Tool - 运行中";
+            if (lprocess) { MessageBox.Show("有任务运行中，不可执行。", "设备忙", MessageBoxButtons.OK, MessageBoxIcon.Warning); return; } MainForm.ActiveForm.Text = "MifareOne Tool - 运行中";
             BackgroundWorker bgw = new BackgroundWorker();
             bgw.DoWork += new DoWorkEventHandler(list_tag);
             bgw.WorkerReportsProgress = true;
@@ -247,7 +247,7 @@ namespace MifareOneTool
         void list_tag(object sender, DoWorkEventArgs e)
         {
             if (lprocess) { return; }
-            ProcessStartInfo psi = CreateProcessStartInfo("nfc-bin/nfc-list.exe");
+            ProcessStartInfo psi = Utils.CreateProcessStartInfo("nfc-bin/nfc-list.exe");
             psi.CreateNoWindow = true;
             psi.UseShellExecute = false;
             psi.RedirectStandardOutput = true;
@@ -271,7 +271,7 @@ namespace MifareOneTool
 
         private string GetUID()
         {
-            ProcessStartInfo psi = CreateProcessStartInfo("nfc-bin/nfc-list.exe");
+            ProcessStartInfo psi = Utils.CreateProcessStartInfo("nfc-bin/nfc-list.exe");
             psi.CreateNoWindow = true;
             psi.UseShellExecute = false;
             psi.RedirectStandardOutput = true;
@@ -319,7 +319,7 @@ namespace MifareOneTool
 
         private void buttonMfRead_Click(object sender, EventArgs e)
         {
-            if (lprocess) { MessageBox.Show("有任务运行中，不可执行。", "设备忙", MessageBoxButtons.OK, MessageBoxIcon.Warning); return; } Form1.ActiveForm.Text = "MifareOne Tool - 运行中";
+            if (lprocess) { MessageBox.Show("有任务运行中，不可执行。", "设备忙", MessageBoxButtons.OK, MessageBoxIcon.Warning); return; } MainForm.ActiveForm.Text = "MifareOne Tool - 运行中";
             string rmfd = "MfRead.tmp";
             string kt = "A";
             string nn = "";
@@ -363,7 +363,7 @@ namespace MifareOneTool
         void mf_read(object sender, DoWorkEventArgs e)
         {
             if (lprocess) { return; }
-            ProcessStartInfo psi = CreateProcessStartInfo("nfc-bin/nfc-mfclassic.exe");
+            ProcessStartInfo psi = Utils.CreateProcessStartInfo("nfc-bin/nfc-mfclassic.exe");
             string[] args = (string[])e.Argument;
             psi.Arguments = "r " + args[1] + " u \"" + args[0] + "\"";
             if (keymfd != "" && args[2] == "")
@@ -398,7 +398,7 @@ namespace MifareOneTool
 
         private void buttonCLI_Click(object sender, EventArgs e)
         {
-            ProcessStartInfo psi = CreateProcessStartInfo("cmd.exe");
+            ProcessStartInfo psi = Utils.CreateProcessStartInfo("cmd.exe");
             psi.WorkingDirectory = "nfc-bin";
             Process.Start(psi);
         }
@@ -450,7 +450,7 @@ namespace MifareOneTool
 
         private void buttonMfWrite_Click(object sender, EventArgs e)
         {
-            if (lprocess) { MessageBox.Show("有任务运行中，不可执行。", "设备忙", MessageBoxButtons.OK, MessageBoxIcon.Warning); return; } Form1.ActiveForm.Text = "MifareOne Tool - 运行中";
+            if (lprocess) { MessageBox.Show("有任务运行中，不可执行。", "设备忙", MessageBoxButtons.OK, MessageBoxIcon.Warning); return; } MainForm.ActiveForm.Text = "MifareOne Tool - 运行中";
             string rmfd = "";
             OpenFileDialog ofd = new OpenFileDialog();
             ofd.CheckFileExists = true;
@@ -496,7 +496,7 @@ namespace MifareOneTool
         void mf_write(object sender, DoWorkEventArgs e)
         {
             if (lprocess) { return; }
-            ProcessStartInfo psi = CreateProcessStartInfo("nfc-bin/nfc-mfclassic.exe");
+            ProcessStartInfo psi = Utils.CreateProcessStartInfo("nfc-bin/nfc-mfclassic.exe");
             string[] args = (string[])e.Argument;
             psi.Arguments = "w " + args[1] + " u \"" + args[0] + "\"";
             if (keymfd != "" && args[2] == "")
@@ -523,7 +523,7 @@ namespace MifareOneTool
 
         private void buttonMfoc_Click(object sender, EventArgs e)
         {
-            if (lprocess) { MessageBox.Show("有任务运行中，不可执行。", "设备忙", MessageBoxButtons.OK, MessageBoxIcon.Warning); return; } Form1.ActiveForm.Text = "MifareOne Tool - 运行中";
+            if (lprocess) { MessageBox.Show("有任务运行中，不可执行。", "设备忙", MessageBoxButtons.OK, MessageBoxIcon.Warning); return; } MainForm.ActiveForm.Text = "MifareOne Tool - 运行中";
             string rmfd = "Mfoc.tmp";
             string key = "";
             if (Control.ModifierKeys == Keys.Control)
@@ -557,7 +557,7 @@ namespace MifareOneTool
         void mfoc(object sender, DoWorkEventArgs e)
         {
             if (lprocess) { return; }
-            ProcessStartInfo psi = CreateProcessStartInfo("nfc-bin/mfoc.exe");
+            ProcessStartInfo psi = Utils.CreateProcessStartInfo("nfc-bin/mfoc.exe");
             string[] args = (string[])e.Argument;
             psi.Arguments = args[1] + " -O \"" + args[0] + "\"";
             psi.CreateNoWindow = true;
@@ -588,7 +588,7 @@ namespace MifareOneTool
 
         private void buttonUidReset_Click(object sender, EventArgs e)
         {
-            if (lprocess) { MessageBox.Show("有任务运行中，不可执行。", "设备忙", MessageBoxButtons.OK, MessageBoxIcon.Warning); return; } Form1.ActiveForm.Text = "MifareOne Tool - 运行中";
+            if (lprocess) { MessageBox.Show("有任务运行中，不可执行。", "设备忙", MessageBoxButtons.OK, MessageBoxIcon.Warning); return; } MainForm.ActiveForm.Text = "MifareOne Tool - 运行中";
             BackgroundWorker bgw = new BackgroundWorker();
             bgw.DoWork += new DoWorkEventHandler(reset_uid);
             bgw.WorkerReportsProgress = true;
@@ -610,7 +610,7 @@ namespace MifareOneTool
         void reset_uid(object sender, DoWorkEventArgs e)
         {
             if (lprocess) { return; }
-            ProcessStartInfo psi = CreateProcessStartInfo("nfc-bin/nfc-mfsetuid.exe");
+            ProcessStartInfo psi = Utils.CreateProcessStartInfo("nfc-bin/nfc-mfsetuid.exe");
             RNGCryptoServiceProvider rng = new RNGCryptoServiceProvider();
             byte[] uid = new byte[4];
             rng.GetNonZeroBytes(uid);
@@ -635,7 +635,7 @@ namespace MifareOneTool
 
         private void buttonUidFormat_Click(object sender, EventArgs e)
         {
-            if (lprocess) { MessageBox.Show("有任务运行中，不可执行。", "设备忙", MessageBoxButtons.OK, MessageBoxIcon.Warning); return; } Form1.ActiveForm.Text = "MifareOne Tool - 运行中";
+            if (lprocess) { MessageBox.Show("有任务运行中，不可执行。", "设备忙", MessageBoxButtons.OK, MessageBoxIcon.Warning); return; } MainForm.ActiveForm.Text = "MifareOne Tool - 运行中";
             if (MessageBox.Show("该操作将会清空UID卡内全部数据！！！\n清空后不可恢复！请确认是否要继续操作？", "危险操作警告", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) == DialogResult.Cancel)
             { return; }
             BackgroundWorker bgw = new BackgroundWorker();
@@ -648,7 +648,7 @@ namespace MifareOneTool
         void format_uid(object sender, DoWorkEventArgs e)
         {
             if (lprocess) { return; }
-            ProcessStartInfo psi = CreateProcessStartInfo("nfc-bin/nfc-mfsetuid.exe");
+            ProcessStartInfo psi = Utils.CreateProcessStartInfo("nfc-bin/nfc-mfsetuid.exe");
             RNGCryptoServiceProvider rng = new RNGCryptoServiceProvider();
             byte[] uid = new byte[4];
             rng.GetNonZeroBytes(uid);
@@ -673,7 +673,7 @@ namespace MifareOneTool
 
         private void buttonBmfRead_Click(object sender, EventArgs e)
         {
-            if (lprocess) { MessageBox.Show("有任务运行中，不可执行。", "设备忙", MessageBoxButtons.OK, MessageBoxIcon.Warning); return; } Form1.ActiveForm.Text = "MifareOne Tool - 运行中";
+            if (lprocess) { MessageBox.Show("有任务运行中，不可执行。", "设备忙", MessageBoxButtons.OK, MessageBoxIcon.Warning); return; } MainForm.ActiveForm.Text = "MifareOne Tool - 运行中";
             string rmfd = "BmfRead.tmp";
             if (checkBoxAutoSave.Checked)
             {
@@ -690,7 +690,7 @@ namespace MifareOneTool
         void bmf_read(object sender, DoWorkEventArgs e)
         {
             if (lprocess) { return; }
-            ProcessStartInfo psi = CreateProcessStartInfo("nfc-bin/nfc-mfclassic.exe");
+            ProcessStartInfo psi = Utils.CreateProcessStartInfo("nfc-bin/nfc-mfclassic.exe");
             string[] args = (string[])e.Argument;
             psi.Arguments = "R A u \"" + args[0] + "\"";
             psi.CreateNoWindow = true;
@@ -721,7 +721,7 @@ namespace MifareOneTool
 
         private void buttonBmfWrite_Click(object sender, EventArgs e)
         {
-            if (lprocess) { MessageBox.Show("有任务运行中，不可执行。", "设备忙", MessageBoxButtons.OK, MessageBoxIcon.Warning); return; } Form1.ActiveForm.Text = "MifareOne Tool - 运行中";
+            if (lprocess) { MessageBox.Show("有任务运行中，不可执行。", "设备忙", MessageBoxButtons.OK, MessageBoxIcon.Warning); return; } MainForm.ActiveForm.Text = "MifareOne Tool - 运行中";
             string rmfd = "";
             OpenFileDialog ofd = new OpenFileDialog();
             ofd.CheckFileExists = true;
@@ -746,7 +746,7 @@ namespace MifareOneTool
         void bmf_write(object sender, DoWorkEventArgs e)
         {
             if (lprocess) { return; }
-            ProcessStartInfo psi = CreateProcessStartInfo("nfc-bin/nfc-mfclassic.exe");
+            ProcessStartInfo psi = Utils.CreateProcessStartInfo("nfc-bin/nfc-mfclassic.exe");
             string[] args = (string[])e.Argument;
             psi.Arguments = "W A u \"" + args[0] + "\"";
             if (keymfd != "")
@@ -787,7 +787,7 @@ namespace MifareOneTool
 
         private void buttonUidWrite_Click(object sender, EventArgs e)
         {
-            if (lprocess) { MessageBox.Show("有任务运行中，不可执行。", "设备忙", MessageBoxButtons.OK, MessageBoxIcon.Warning); return; } Form1.ActiveForm.Text = "MifareOne Tool - 运行中";
+            if (lprocess) { MessageBox.Show("有任务运行中，不可执行。", "设备忙", MessageBoxButtons.OK, MessageBoxIcon.Warning); return; } MainForm.ActiveForm.Text = "MifareOne Tool - 运行中";
             byte[] buid = new byte[4];
             RNGCryptoServiceProvider rng = new RNGCryptoServiceProvider();
             rng.GetNonZeroBytes(buid);
@@ -808,7 +808,7 @@ namespace MifareOneTool
         void set_uid(object sender, DoWorkEventArgs e)
         {
             if (lprocess) { return; }
-            ProcessStartInfo psi = CreateProcessStartInfo("nfc-bin/nfc-mfsetuid.exe");
+            ProcessStartInfo psi = Utils.CreateProcessStartInfo("nfc-bin/nfc-mfsetuid.exe");
             psi.Arguments = "" + ((string)e.Argument).Substring(0, 8) + "2B0804006263646566676869";
             psi.CreateNoWindow = true;
             psi.UseShellExecute = false;
@@ -842,7 +842,7 @@ namespace MifareOneTool
         void Mfcuk(object sender, DoWorkEventArgs e)
         {
             if (lprocess) { MessageBox.Show("有任务运行中，不可执行。", "设备忙", MessageBoxButtons.OK, MessageBoxIcon.Warning); return; }
-            ProcessStartInfo psi = CreateProcessStartInfo("cmd");
+            ProcessStartInfo psi = Utils.CreateProcessStartInfo("cmd");
             psi.Arguments = "/k mfcuk.exe -v 3 -C -R -1 -s 250 -S 250";
             psi.WorkingDirectory = "nfc-bin";
             lprocess = true;
@@ -858,7 +858,7 @@ namespace MifareOneTool
 
         private void buttonCmfWrite_Click(object sender, EventArgs e)
         {
-            if (lprocess) { MessageBox.Show("有任务运行中，不可执行。", "设备忙", MessageBoxButtons.OK, MessageBoxIcon.Warning); return; } Form1.ActiveForm.Text = "MifareOne Tool - 运行中";
+            if (lprocess) { MessageBox.Show("有任务运行中，不可执行。", "设备忙", MessageBoxButtons.OK, MessageBoxIcon.Warning); return; } MainForm.ActiveForm.Text = "MifareOne Tool - 运行中";
             string rmfd = "";
             OpenFileDialog ofd = new OpenFileDialog();
             ofd.CheckFileExists = true;
@@ -913,7 +913,7 @@ namespace MifareOneTool
         void cmf_write(object sender, DoWorkEventArgs e)
         {
             if (lprocess) { return; }
-            ProcessStartInfo psi = CreateProcessStartInfo("nfc-bin/nfc-mfclassic.exe");
+            ProcessStartInfo psi = Utils.CreateProcessStartInfo("nfc-bin/nfc-mfclassic.exe");
             string[] args = (string[])e.Argument;
             psi.Arguments = "c " + args[1] + " u \"" + args[0] + "\"";
             if (keymfd != "" && args[2] == "")
@@ -951,7 +951,7 @@ namespace MifareOneTool
                 if (process.HasExited == false)
                 {
                     process.Kill();
-                    Form1.ActiveForm.Text = "MifareOne Tool - 已终止";
+                    MainForm.ActiveForm.Text = "MifareOne Tool - 已终止";
                     logAppend("##程序已被强制停止##");
                 }
             }
@@ -959,7 +959,7 @@ namespace MifareOneTool
 
         private void buttonLockUfuid_Click(object sender, EventArgs e)
         {
-            if (lprocess) { MessageBox.Show("有任务运行中，不可执行。", "设备忙", MessageBoxButtons.OK, MessageBoxIcon.Warning); return; } Form1.ActiveForm.Text = "MifareOne Tool - 运行中";
+            if (lprocess) { MessageBox.Show("有任务运行中，不可执行。", "设备忙", MessageBoxButtons.OK, MessageBoxIcon.Warning); return; } MainForm.ActiveForm.Text = "MifareOne Tool - 运行中";
             if (MessageBox.Show("该操作将会锁死UFUID卡片！！！\n锁死后不可恢复！无法再次更改0块！请确认是否要继续操作？", "危险操作警告", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) == DialogResult.Cancel)
             { return; }
             BackgroundWorker bgw = new BackgroundWorker();
@@ -972,7 +972,7 @@ namespace MifareOneTool
         void lock_ufuid(object sender, DoWorkEventArgs e)
         {
             if (lprocess) { return; }
-            ProcessStartInfo psi = CreateProcessStartInfo("nfc-bin/nfc-mfsetuid.exe");
+            ProcessStartInfo psi = Utils.CreateProcessStartInfo("nfc-bin/nfc-mfsetuid.exe");
             RNGCryptoServiceProvider rng = new RNGCryptoServiceProvider();
             byte[] uid = new byte[4];
             rng.GetNonZeroBytes(uid);
@@ -998,7 +998,7 @@ namespace MifareOneTool
         private void buttonMfFormat_Click(object sender, EventArgs e)
         {
             if (lprocess) { MessageBox.Show("有任务运行中，不可执行。", "设备忙", MessageBoxButtons.OK, MessageBoxIcon.Warning); return; }
-            if (keymfd == "") { MessageBox.Show("未选择有效key.mfd。", "无密钥", MessageBoxButtons.OK, MessageBoxIcon.Error); return; } Form1.ActiveForm.Text = "MifareOne Tool - 运行中";
+            if (keymfd == "") { MessageBox.Show("未选择有效key.mfd。", "无密钥", MessageBoxButtons.OK, MessageBoxIcon.Error); return; } MainForm.ActiveForm.Text = "MifareOne Tool - 运行中";
             string rmfd = keymfd;
             string kt = "A";
             if (checkBoxAutoABN.Checked && keymfd != "")
@@ -1025,7 +1025,7 @@ namespace MifareOneTool
         void mf_format(object sender, DoWorkEventArgs e)
         {
             if (lprocess) { return; }
-            ProcessStartInfo psi = CreateProcessStartInfo("nfc-bin/nfc-mfclassic.exe");
+            ProcessStartInfo psi = Utils.CreateProcessStartInfo("nfc-bin/nfc-mfclassic.exe");
             string[] args = (string[])e.Argument;
             psi.Arguments = "f " + args[1] + " u \"" + args[0] + "\"";
             psi.Arguments += " \"" + keymfd + "\" f";
@@ -1064,7 +1064,7 @@ namespace MifareOneTool
 
         private void buttonECmfoc_Click(object sender, EventArgs e)
         {
-            if (lprocess) { MessageBox.Show("有任务运行中，不可执行。", "设备忙", MessageBoxButtons.OK, MessageBoxIcon.Warning); return; } Form1.ActiveForm.Text = "MifareOne Tool - 运行中";
+            if (lprocess) { MessageBox.Show("有任务运行中，不可执行。", "设备忙", MessageBoxButtons.OK, MessageBoxIcon.Warning); return; } MainForm.ActiveForm.Text = "MifareOne Tool - 运行中";
             string rmfd = "Mfoc.tmp";
             string key = "";
             string[] ks = Interaction.InputBox("请输入已知的Key，以英文半角逗号分隔。", "请输入已知Key", "FFFFFFFFFFFF", -1, -1).Trim().Split(',');
@@ -1124,7 +1124,7 @@ namespace MifareOneTool
 
         private void buttonEnAcr122u_Click(object sender, EventArgs e)
         {
-            if (lprocess) { MessageBox.Show("有任务运行中，不可执行。", "设备忙", MessageBoxButtons.OK, MessageBoxIcon.Warning); return; } Form1.ActiveForm.Text = "MifareOne Tool - 运行中";
+            if (lprocess) { MessageBox.Show("有任务运行中，不可执行。", "设备忙", MessageBoxButtons.OK, MessageBoxIcon.Warning); return; } MainForm.ActiveForm.Text = "MifareOne Tool - 运行中";
             if (MessageBox.Show("同时打开ACR122U支持可能会引起操作速度下降。\n请确认是否要继续操作？", "提示信息", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) == DialogResult.Cancel)
             { Text = "MifareOne Tool"; return; }
             lprocess = true;
@@ -1161,7 +1161,7 @@ namespace MifareOneTool
 
         private void buttonCheckEncrypt_Click(object sender, EventArgs e)
         {//其实这个mfdetect就是个mfoc阉割版。。只检测不破解而已，所以-f -k什么的可以加上，测试自己的key
-            if (lprocess) { MessageBox.Show("有任务运行中，不可执行。", "设备忙", MessageBoxButtons.OK, MessageBoxIcon.Warning); return; } Form1.ActiveForm.Text = "MifareOne Tool - 运行中";
+            if (lprocess) { MessageBox.Show("有任务运行中，不可执行。", "设备忙", MessageBoxButtons.OK, MessageBoxIcon.Warning); return; } MainForm.ActiveForm.Text = "MifareOne Tool - 运行中";
             string key = "";
             if (Control.ModifierKeys == Keys.Control)
             {
@@ -1189,7 +1189,7 @@ namespace MifareOneTool
         void MfDetect(object sender, DoWorkEventArgs e)
         {
             if (lprocess) { return; }
-            ProcessStartInfo psi = CreateProcessStartInfo("nfc-bin/mfdetect.exe");
+            ProcessStartInfo psi = Utils.CreateProcessStartInfo("nfc-bin/mfdetect.exe");
             psi.Arguments = (string)(e.Argument) + "-O dummy.tmp";
             psi.CreateNoWindow = true;
             psi.UseShellExecute = false;
@@ -1241,7 +1241,7 @@ namespace MifareOneTool
 
         private void buttonnKeysMfoc_Click(object sender, EventArgs e)
         {
-            if (lprocess) { MessageBox.Show("有任务运行中，不可执行。", "设备忙", MessageBoxButtons.OK, MessageBoxIcon.Warning); return; } Form1.ActiveForm.Text = "MifareOne Tool - 运行中";
+            if (lprocess) { MessageBox.Show("有任务运行中，不可执行。", "设备忙", MessageBoxButtons.OK, MessageBoxIcon.Warning); return; } MainForm.ActiveForm.Text = "MifareOne Tool - 运行中";
             string rmfd = "Mfoc.tmp";
             string key = "";
             string[] ks = Interaction.InputBox("请输入已知的Key，以英文半角逗号分隔。", "请输入已知Key", Properties.Settings.Default.LastTryKey, -1, -1).Trim().Split(',');
@@ -1271,7 +1271,7 @@ namespace MifareOneTool
 
         private void buttonDictMfoc_Click(object sender, EventArgs e)
         {
-            if (lprocess) { MessageBox.Show("有任务运行中，不可执行。", "设备忙", MessageBoxButtons.OK, MessageBoxIcon.Warning); return; } Form1.ActiveForm.Text = "MifareOne Tool - 运行中";
+            if (lprocess) { MessageBox.Show("有任务运行中，不可执行。", "设备忙", MessageBoxButtons.OK, MessageBoxIcon.Warning); return; } MainForm.ActiveForm.Text = "MifareOne Tool - 运行中";
             string cmd_mode = "/k";
             //if (Control.ModifierKeys == Keys.Control)
             //{
@@ -1314,7 +1314,7 @@ namespace MifareOneTool
         void mfocCMD(object sender, DoWorkEventArgs e)
         {
             if (lprocess) { return; }
-            ProcessStartInfo psi = CreateProcessStartInfo("cmd.exe");
+            ProcessStartInfo psi = Utils.CreateProcessStartInfo("cmd.exe");
             string[] args = (string[])e.Argument;
             psi.WorkingDirectory = "./";
             psi.Arguments = "/T:0A " + args[2] + @" nfc-bin\mfoc.exe " + args[1] + " -O \"" + args[0] + "\"";
@@ -1357,7 +1357,7 @@ namespace MifareOneTool
 
         private void buttonHardNested_Click(object sender, EventArgs e)
         {
-            if (lprocess) { MessageBox.Show("有任务运行中，不可执行。", "设备忙", MessageBoxButtons.OK, MessageBoxIcon.Warning); return; } Form1.ActiveForm.Text = "MifareOne Tool - 运行中";
+            if (lprocess) { MessageBox.Show("有任务运行中，不可执行。", "设备忙", MessageBoxButtons.OK, MessageBoxIcon.Warning); return; } MainForm.ActiveForm.Text = "MifareOne Tool - 运行中";
             FormHardNes fhn = new FormHardNes();
             if (fhn.ShowDialog() == DialogResult.Yes)
             {
@@ -1384,7 +1384,7 @@ namespace MifareOneTool
         void Hardnest(object sender, DoWorkEventArgs e)
         {
             if (lprocess) { return; }
-            ProcessStartInfo psi = CreateProcessStartInfo("nfc-bin/libnfc_hardnested.exe");
+            ProcessStartInfo psi = Utils.CreateProcessStartInfo("nfc-bin/libnfc_hardnested.exe");
             if (Properties.Settings.Default.HardLowCost)
             {
                 psi.FileName = "nfc-bin/libnfc_hardnestedlc.exe";
@@ -1418,7 +1418,7 @@ namespace MifareOneTool
         void CollectNonce(object sender, DoWorkEventArgs e)
         {
             if (lprocess) { return; }
-            ProcessStartInfo psi = CreateProcessStartInfo("nfc-bin/collect.exe");
+            ProcessStartInfo psi = Utils.CreateProcessStartInfo("nfc-bin/collect.exe");
             psi.Arguments = (string)e.Argument;
             psi.CreateNoWindow = true;
             psi.UseShellExecute = false;
@@ -1522,14 +1522,6 @@ namespace MifareOneTool
         {
             FormMFF08 mff08 = new FormMFF08();
             mff08.ShowDialog();
-        }
-
-        private ProcessStartInfo CreateProcessStartInfo(string fileName)
-        {
-            ProcessStartInfo processStartInfo = new ProcessStartInfo(fileName);
-            processStartInfo.StandardOutputEncoding = Encoding.GetEncoding(936);
-            processStartInfo.StandardErrorEncoding = Encoding.GetEncoding(936);
-            return processStartInfo;
         }
     }
 }
